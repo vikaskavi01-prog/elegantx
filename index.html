@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELEGANTX - Advanced AI Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="auth-overlay">
+        <div class="auth-box">
+            <h2>SYSTEM LOCKED</h2>
+            <input type="password" id="passcode" placeholder="Enter Proof ID " onkeypress="if(event.key === 'Enter') authenticate()">
+            <button onclick="authenticate()">UNLOCK</button>
+        </div>
+    </div>
+
+    <div class="elegantx-app" id="app" style="display:none;">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="brand-container">
+                <h1 class="brand">ELEGANTX</h1>
+                <div class="brand-line"></div>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="active" data-view="dashboard">Dashboard</a>
+                <a href="#" data-view="chat">AI Assistant</a>
+                <a href="#" data-view="offline">Offline Search</a>
+                <a href="#" data-view="settings">Settings</a>
+            </nav>
+
+            <div class="history-panel">
+                <h3>HISTORY</h3>
+                <ul id="historyList">
+                    <!-- History items injected here -->
+                </ul>
+                <button class="exec-btn" style="width: 100%; border-color: #ff0055; color: #ff0055; margin-top: 15px;" onclick="wipeData()">[ END SESSION ]</button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            
+            <!-- Top Header -->
+            <header class="top-bar">
+                <div class="status-panel">
+                    <span class="status-indicator online">SYS: ONLINE</span>
+                    <span class="status-indicator">MODE: <span id="currentModeDisplay" class="cyan-text">AI CHAT</span></span>
+                </div>
+                
+                <div class="method-selector">
+                    <select id="methodSelect" onchange="changeMethod()">
+                        <option value="chat">AI CHAT</option>
+                        <option value="voice">VOICE MODE</option>
+                        <option value="offline">OFFLINE SEARCH</option>
+                        <option value="document">DOCUMENT ANALYSIS</option>
+                    </select>
+                </div>
+            </header>
+
+            <!-- Center AI Core Visualization -->
+            <div class="ai-core-container">
+                <div class="ai-core" id="aiCore">
+                    <div class="core-text">AI</div>
+                    <div class="core-ring"></div>
+                    <div class="core-ring-inner"></div>
+                </div>
+                <div class="waveform" id="waveform">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div>
+                </div>
+                <div class="core-status" id="coreStatus">IDLE</div>
+            </div>
+
+            <!-- Chat & Results Area -->
+            <div class="workspace-area" id="workspaceArea">
+                <div class="chat-container" id="chatLog">
+                    <div class="msg ai-msg">Welcome to ELEGANTX. Systems are online and air-gapped.</div>
+                </div>
+            </div>
+
+            <!-- Bottom Input Command Center -->
+            <div class="input-container">
+                <button class="icon-btn mic-btn" id="micBtn" title="Toggle Voice Assistant">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                </button>
+                <button class="icon-btn attach-btn" onclick="document.getElementById('docUpload').click()" title="Upload Local Document">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                </button>
+                <input type="file" id="docUpload" style="display:none" onchange="uploadDocument()">
+                
+                <input type="text" id="chatInput" placeholder="Initialize command sequence..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
+                
+                <button class="exec-btn" onclick="sendChatMessage()">EXECUTE</button>
+            </div>
+        </main>
+
+        <!-- Right Side Tech Panels -->
+        <aside class="tech-panel">
+            <div class="panel-box">
+                <h4>TELEMETRY</h4>
+                <div class="stat-row"><span>Engine:</span> <span class="cyan-text">Ollama (Local)</span></div>
+                <div class="stat-row"><span>Model:</span> <span class="cyan-text">phi4-mini</span></div>
+                <div class="stat-row"><span>Security:</span> <span class="cyan-text">XOR RAM Encrypted</span></div>
+                <div class="stat-row"><span>Docs Indexed:</span> <span id="docCount" class="cyan-text">0</span></div>
+            </div>
+            
+            <div class="panel-box mt-4">
+                <h4>VOICE SUBSYSTEM</h4>
+                <div class="stat-row"><span>Input:</span> <span id="micStatusText">Inactive</span></div>
+                <div class="stat-row"><span>Output:</span> <span>Active</span></div>
+            </div>
+        </aside>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
